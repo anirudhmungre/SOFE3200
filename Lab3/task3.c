@@ -3,6 +3,7 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include <string.h>
+#include <sys/stat.h>
 
 void replaceAll(char *stringToReplace, const char *wordToReplace, const char *replaceWith) {
     char t[1024], * p;
@@ -19,19 +20,28 @@ void replaceAll(char *stringToReplace, const char *wordToReplace, const char *re
 
 void main()
 {
+    int file = open("input.txt", O_RDONLY);
+    if (file < 0) {
+        perror("FileNotFound");
+        exit(1);
+    }
 
-    char parentBuff[1024];
-    char childBuff[1024];
-    int fd[2], file, bytes, eFile;
+    struct stat fileStat;
+    if (fstat(file, &fileStat) < 0) { 
+        perror("FileNotFound");
+        exit(1);
+    }
+
+    char parentBuff[fileStat.st_size];
+    char childBuff[fileStat.st_size];
+    int fd[2], bytes, eFile;
 
     pipe(fd);
 
     if(fork()) {
     //Parent closes write
     close(fd[0]);
-    file = open("input.txt", O_RDONLY);
     bytes = read(file, parentBuff, sizeof(parentBuff));
-
     // Puts data in pipe
     write(fd[1], parentBuff, bytes);
     } else {

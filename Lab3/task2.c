@@ -20,11 +20,15 @@ void replaceAll(char *stringToReplace, const char *wordToReplace, const char *re
 
 int main() {
     int file = open("input.txt", O_RDONLY);
-    if (file < 0) {return 1;}
+    if (file < 0) {
+        perror("FileNotFound");
+        exit(1);
+    }
 
     struct stat fileStat;
     if (fstat(file, &fileStat) < 0) { 
-        return 1; 
+        perror("FileNotFound");
+        exit(1);
     }
     char fileData[fileStat.st_size + 5];
 
