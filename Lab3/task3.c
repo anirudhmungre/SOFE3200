@@ -20,20 +20,20 @@ void replaceAll(char *stringToReplace, const char *wordToReplace, const char *re
 
 void main()
 {
-    int file = open("input.txt", O_RDONLY);
+    int file = open("AliceInWonderland.txt", O_RDONLY);
     if (file < 0) {
         perror("FileNotFound");
         exit(1);
     }
 
-    struct stat fileStat;
-    if (fstat(file, &fileStat) < 0) { 
+    struct stat fileCount;
+    if (fstat(file, &fileCount) < 0) { 
         perror("FileNotFound");
         exit(1);
     }
 
-    char parentBuff[fileStat.st_size];
-    char childBuff[fileStat.st_size];
+    char parentBuff[fileCount.st_size + 5];
+    char childBuff[fileCount.st_size + 5];
     int fd[2], bytes, eFile;
 
     pipe(fd);
