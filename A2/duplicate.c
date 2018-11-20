@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
         perror("Error forking");
         exit(1);
     }
-    else if ((pid = fork()) == 0){
+    else if (pid == 0){
         while(1) {
             sleep(1);
             printf("still duplicating...\n");
@@ -57,9 +57,9 @@ int main(int argc, char *argv[])
         // Print to the output file
         fprintf(out, "%s", buffer);
         fclose(out);
-        // kill(0, SIGQUIT);
-        printf("Copied %ld bytes from %s to %s.\n", numbytes, argv[1], argv[2]);
         kill(pid, SIGQUIT);
+        printf("Copied %ld bytes from %s to %s.\n", numbytes, argv[1], argv[2]);
+        exit(1);
     }
     return 0;
 }
