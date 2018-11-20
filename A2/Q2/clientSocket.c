@@ -36,8 +36,8 @@ int main(int argc , char *argv[])
     //keep communicating with server
     while(1)
     {
-        printf("Enter message : ");
-        scanf("%s" , message);
+        printf("Please enter question for chatbot : ");
+        fgets(message, 256, stdin); //reads the input with spaces accepted
          
         //Send some data
         if( send(sock , message , strlen(message) , 0) < 0)
